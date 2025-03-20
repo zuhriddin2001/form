@@ -1,12 +1,21 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = htmlspecialchars($_POST['username']);
-    $password = htmlspecialchars($_POST['password']);
+session_start();
 
-    $data = "Foydalanuvchi nomi: $username | Parol: $password\n";
+if(isset($_POST['register'])) {
+    $_SESSION['username'] = $_POST['username'];
+    $_SESSION['password'] = $_POST['password'];
+    header("Location: login.php");
+    exit();
+}
 
-    file_put_contents("users.txt", $data, FILE_APPEND);
+if(isset($_POST['login'])) {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-    echo "Ro'yxatdan muvaffaqiyatli o'tdingiz!";
+    if($username == $_SESSION['username'] && $password == $_SESSION['password']) {
+        echo "Tizimga muvaffaqiyatli kirdingiz!";
+    } else {
+        echo "Login yoki parol xato!";
+    }
 }
 ?>
